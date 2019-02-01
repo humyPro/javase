@@ -2,13 +2,15 @@
 
 ​	记录平时遇到的问题，其实之前遇到过很多，但是从现在开始，我要做一个好人。
 
-#### 1.线程池获取线程返回值
+#### 1.线程池获取线程返回值 
+
+​	目录:TestForFutureAndThreadPool
 
 ​	当向一个线程池中提交了多个任务后，可以获得一个```Future```的集合，如果我们顺序从这个集合中调用```Future.get()```方法，那么久会造成程序一直阻塞在每一个尚未完成的任务，浪费时间。所以我就想到了比顺序遍历稍微好一点的方法。
 ​	
 ​	其实就是遍历`Future`集合，先通过`Future.isDown()`方法判断此任务是否已经完成，如果完成了就调用`Future.get()`方法拿到返回值，并从集合中移除此任务，下标保持不动; 如果任务尚未完成，那么下标加一位，查看下一个任务; 当下标到达集合尾部的时候归零，从头再来。
 ​	
-​	可见GitHub上Java se仓库中```TestForFutureAndThreadPool.java```:
+​	可见GitHub上Java se仓库中```TestForFutureAndThreadPool/TestForFutureAndThreadPool.java```:
 
 ```java
 // 创建一个线程池
@@ -35,5 +37,5 @@ for (int i = 0; i < futures.size(); ) {
 }
 ```
 
-
+​	输出结果按照线程睡眠的时间从低到高，结果如下:
 
